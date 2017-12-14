@@ -35,6 +35,9 @@ if [ "$1" = 'cassandra' ]; then
 	sed -ri 's/(- seeds:).*/\1 "'"$CASSANDRA_SEEDS"'"/' "$CASSANDRA_CONFIG/cassandra.yaml"
 
 	for yaml in \
+		cluster_name \
+		num_tokens \
+		partitioner \
 		broadcast_address \
 		broadcast_rpc_address \
 		cluster_name \
