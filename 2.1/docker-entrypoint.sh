@@ -36,7 +36,6 @@ if [ "$1" = 'cassandra' ]; then
 
 	for yaml in \
 		cluster_name \
-		num_tokens \
 		partitioner \
 		broadcast_address \
 		broadcast_rpc_address \
@@ -44,6 +43,7 @@ if [ "$1" = 'cassandra' ]; then
 		endpoint_snitch \
 		listen_address \
 		num_tokens \
+		initial_token \
 		rpc_address \
 		start_rpc \
 	; do
@@ -51,6 +51,17 @@ if [ "$1" = 'cassandra' ]; then
 		val="${!var}"
 		if [ "$val" ]; then
 			sed -ri 's/^(# )?('"$yaml"':).*/\2 '"$val"'/' "$CASSANDRA_CONFIG/cassandra.yaml"
+		fi
+	done
+
+	for envvar in \
+		MAX_HEAP_SIZE \
+		HEAP_NEWSIZE \
+	; do
+		var="CASSANDRA_${envvar}"
+		val="${!var}"
+		if [ "$val" ]; then
+			sed -ri 's/^(#)?('$envvar'=).*/\2'"$val"'/' "$CASSANDRA_CONFIG/cassandra-env.sh"
 		fi
 	done
 
